@@ -5,33 +5,21 @@
 
 include_recipe "java"
 
-elasticsearch_src_filename = "elasticsearch-0.90.0.tar.gz"
-elasticsearch_src_filepath = "#{Chef::Config['file_cache_path']}/#{elasticsearch_src_filename}"
-
-remote_file elasticsearch_src_filepath do
-  source "https://download.elasticsearch.org/elasticsearch/elasticsearch/#{elasticsearch_src_filename}"
+yum_key "RPM-GPG-KEY-elasticsearch" do
+  url "http://packages.elasticsearch.org/GPG-KEY-elasticsearch"
+  action :add
 end
 
-bash "install_elasticsearch" do
-  cwd ::File.dirname(elasticsearch_src_filepath)
-  code <<-EOH
-    tar -xf #{elasticsearch_src_filename}
-    rm #{elasticsearch_src_filename}
-    mv elasticsearch-* elasticsearch
-    mv elasticsearch /usr/local/share
-    EOH
-  not_if { ::File.exists?("/usr/local/share/elasticsearch") }
+yum_repository "elasticsearch" do
+  repo_name "elasticsearch"
+  description "Elasticsearch 0.90.x Stable"
+  url "http://packages.elasticsearch.org/elasticsearch/0.90/centos"
+  key "RPM-GPG-KEY-elasticsearch"
+  action :add
 end
 
-bash "install_elasticsearch-servicewrapper" do
-  cwd ::File.dirname(elasticsearch_src_filepath)
-  code <<-EOH
-    curl -L http://github.com/elasticsearch/elasticsearch-servicewrapper/tarball/master | tar -xz
-    mv *servicewrapper*/service /usr/local/share/elasticsearch/bin/
-    rm -Rf *servicewrapper*
-    /usr/local/share/elasticsearch/bin/service/elasticsearch install
-    EOH
-    not_if { ::File.exists?("/usr/local/share/elasticsearch/bin/service/elasticsearch") } 
+package "elasticsearch" do
+  action :install
 end
 
 service "elasticsearch" do
