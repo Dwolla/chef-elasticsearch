@@ -10,8 +10,6 @@ recipe "elasticsearch", "Installs Elasticsearch"
 recipe "elasticsearch::plugins", "Installs Elasticsearch plugins"
 
 %w{
-    debian
-    ubuntu
     centos
     redhat
     scientific
@@ -22,4 +20,5 @@ recipe "elasticsearch::plugins", "Installs Elasticsearch plugins"
   supports os
 end
 
+depends "yum"
 depends "java"
