@@ -8,13 +8,13 @@ Requirements
 
 ## Platform:
 
-* CentOS
-* Debian/Ubuntu
+* RHEL/CentOS/Fedora
 
-Tested on CentOS 6, though should work on most Linux distributions.
+Tested on CentOS 6, though should work on most Red Hat Linux derivatives.
 
 ## Cookbooks:
 
+* yum
 * java
 
 Attributes
