@@ -5,17 +5,11 @@
 
 include_recipe "java"
 
-yum_key "RPM-GPG-KEY-elasticsearch" do
-  url "http://packages.elasticsearch.org/GPG-KEY-elasticsearch"
-  action :add
-end
-
 yum_repository "elasticsearch" do
-  repo_name "elasticsearch"
   description "Elasticsearch 0.90.x Stable"
-  url "http://packages.elasticsearch.org/elasticsearch/0.90/centos"
-  key "RPM-GPG-KEY-elasticsearch"
-  action :add
+  baseurl "http://packages.elasticsearch.org/elasticsearch/0.90/centos"
+  gpgkey "http://packages.elasticsearch.org/GPG-KEY-elasticsearch"
+  action :create
 end
 
 package "elasticsearch" do
